@@ -34,21 +34,29 @@ import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 public class MultiplePermission {
     List<String> not_granted = new ArrayList<>();
     List<String> denied = new ArrayList<>();
+    List<Integer> Sennt_permission_count = new ArrayList<>();
+    List<Integer> Grant_permission_count = new ArrayList<>();
     Context mContext;
+    int counter=0;
 
     private static final int PERMISSION_REQUEST_CODE = 99;
 
     public MultiplePermission(Context context, MultiplePermission.GetPermissionResult getPermissionResult, String... reqName ){
 
+
         mContext=context;
         for(String Permssion_name : reqName )
         {
+            counter=counter+1;
+            Sennt_permission_count.add(counter);
+
 
             switch (Permssion_name) {
                 case "Location" :
                     if (ContextCompat.checkSelfPermission(context.getApplicationContext(), ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED)
                     {
-                        getPermissionResult.getPermissionMessage("Location Ok");
+                       // getPermissionResult.getPermissionMessage("Location Ok");
+                        Grant_permission_count.add(1);
                     } else {
                         //  getPermissionResult.getPermissionMessage("Not OK");
                         // ActivityCompat.requestPermissions((Activity) context, new String[]{ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
@@ -59,7 +67,8 @@ public class MultiplePermission {
                     if (ContextCompat.checkSelfPermission(context.getApplicationContext(), CAMERA) == PackageManager.PERMISSION_GRANTED)
 
                     {
-                        getPermissionResult.getPermissionMessage("Camera Ok");
+                       //getPermissionResult.getPermissionMessage("Camera Ok");
+                        Grant_permission_count.add(1);
 
                     } else {
                         //getPermissionResult.getPermissionMessage("Not OK");
@@ -71,7 +80,8 @@ public class MultiplePermission {
                 case "File_STORAGE" :
                     if (ContextCompat.checkSelfPermission(context.getApplicationContext(),WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED)
                     {
-                        getPermissionResult.getPermissionMessage("WRITE_EXTERNAL_STORAGE Ok");
+                       // getPermissionResult.getPermissionMessage("File_STORAGE Ok");
+                        Grant_permission_count.add(1);
                     }
                     else {
 
@@ -81,7 +91,8 @@ public class MultiplePermission {
                 case "SMS" :
                     if (ContextCompat.checkSelfPermission(context.getApplicationContext(),SEND_SMS) == PackageManager.PERMISSION_GRANTED)
                     {
-                        getPermissionResult.getPermissionMessage("SEND_SMS Ok");
+                       // getPermissionResult.getPermissionMessage("SMS Ok");
+                        Grant_permission_count.add(1);
                     }
                     else {
 
@@ -92,7 +103,8 @@ public class MultiplePermission {
                 case "CALENDAR" :
                     if (ContextCompat.checkSelfPermission(context.getApplicationContext(),READ_CALENDAR) == PackageManager.PERMISSION_GRANTED)
                     {
-                        getPermissionResult.getPermissionMessage("READ_CALENDAR Ok");
+                      //  getPermissionResult.getPermissionMessage("CALENDAR Ok");
+                        Grant_permission_count.add(1);
                     }
                     else {
 
@@ -103,21 +115,19 @@ public class MultiplePermission {
                 case "CONTACTS" :
                     if (ContextCompat.checkSelfPermission(context.getApplicationContext(),READ_CONTACTS) == PackageManager.PERMISSION_GRANTED)
                     {
-                        getPermissionResult.getPermissionMessage("READ_CONTACTS Ok");
+                     //   getPermissionResult.getPermissionMessage("CONTACTS Ok");
+                        Grant_permission_count.add(1);
                     }
                     else {
 
                         not_granted.add("android.permission.READ_CONTACTS");
                     }
                     break;
-
-
-
-
                 case "CALL_PHONE" :
                     if (ContextCompat.checkSelfPermission(context.getApplicationContext(),CALL_PHONE) == PackageManager.PERMISSION_GRANTED)
                     {
-                        getPermissionResult.getPermissionMessage("CALL_PHONE Ok");
+                     //   getPermissionResult.getPermissionMessage("CALL_PHONE Ok");
+                        Grant_permission_count.add(1);
                     }
                     else {
 
@@ -128,7 +138,8 @@ public class MultiplePermission {
                 case "Record_Audio" :
                     if (ContextCompat.checkSelfPermission(context.getApplicationContext(),RECORD_AUDIO) == PackageManager.PERMISSION_GRANTED)
                     {
-                        getPermissionResult.getPermissionMessage("RECORD_AUDIO Ok");
+                      //  getPermissionResult.getPermissionMessage("Record_Audio Ok");
+                        Grant_permission_count.add(1);
                     }
                     else {
 
@@ -138,7 +149,8 @@ public class MultiplePermission {
                 case "Sensors" :
                     if (ContextCompat.checkSelfPermission(context.getApplicationContext(),BODY_SENSORS) == PackageManager.PERMISSION_GRANTED)
                     {
-                        getPermissionResult.getPermissionMessage("BODY_SENSORS Ok");
+                      //  getPermissionResult.getPermissionMessage("Sensors Ok");
+                        Grant_permission_count.add(1);
                     }
                     else {
 
@@ -149,6 +161,8 @@ public class MultiplePermission {
             }
 
         }
+     //   Toast.makeText(context, "Counter\n"+Sennt_permission_count.size(), Toast.LENGTH_SHORT).show();
+     //   Toast.makeText(context, "Grant Counter\n"+Grant_permission_count.size(), Toast.LENGTH_SHORT).show();
         /**
          *  requestPermissions methods
          */
@@ -157,32 +171,35 @@ public class MultiplePermission {
             String[] array = not_granted.toArray(new String[not_granted.size()]);
             ActivityCompat.requestPermissions((Activity) context,array, PERMISSION_REQUEST_CODE);
 
-            for(int j=0;j<not_granted.size();j++){
-
-
+            for(int j=0;j<not_granted.size();j++)
+            {
                 if (ContextCompat.checkSelfPermission(context.getApplicationContext(), not_granted.get(j)) == PackageManager.PERMISSION_GRANTED)
 
                 {
                     // getPermissionResult.getPermissionMessage("Camera Ok");
-
-                }else
+                    Grant_permission_count.add(1);
+                }
+                else
                 {
                     denied.add( not_granted.get(j));
 
                 }
 
             }
+
         }
+     //   Toast.makeText(context, "2 Grant Counter\n"+Grant_permission_count.size(), Toast.LENGTH_SHORT).show();
+
         if(denied.size()>0){
 
             for (int i=0;i<denied.size();i++){
 
-                boolean flag= ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, denied.get(i));
+             //   boolean flag= ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, denied.get(i));
 
 
                 if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, denied.get(i)))
                 {
-                    Toast.makeText((Activity) context, "MEssage show", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText((Activity) context, "MEssage show", Toast.LENGTH_SHORT).show();
                 }
                 else {
 
@@ -191,7 +208,7 @@ public class MultiplePermission {
                     }
                     else
                     {
-                        Toast.makeText((Activity) context, "Settings", Toast.LENGTH_SHORT).show();
+                       // Toast.makeText((Activity) context, "Settings", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent();
                         intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                         Uri uri = Uri.fromParts("package", context.getPackageName(), null);
@@ -203,6 +220,20 @@ public class MultiplePermission {
             }
             Appdata.Camera_flag = "false";
         }
+     //  Toast.makeText(context, "3 Grant Counter\n"+Grant_permission_count.size(), Toast.LENGTH_SHORT).show();
+
+        if(Sennt_permission_count.size()==Grant_permission_count.size()){
+
+            getPermissionResult.getPermissionMessage("OK");
+
+        }
+        else{
+
+            getPermissionResult.getPermissionMessage("Not Ok");
+
+        }
+
+
     }
     public interface GetPermissionResult {
         void getPermissionMessage(String permissionStatus);
