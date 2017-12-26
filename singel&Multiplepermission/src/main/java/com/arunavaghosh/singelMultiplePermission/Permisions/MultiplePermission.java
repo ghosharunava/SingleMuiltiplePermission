@@ -37,6 +37,7 @@ public class MultiplePermission {
     List<String> denied = new ArrayList<>();
     List<Integer> Sennt_permission_count = new ArrayList<>();
     List<Integer> Grant_permission_count = new ArrayList<>();
+    List<String> Permission_shouldshow = new ArrayList<>();
     Context mContext;
     int counter=0;
 
@@ -164,6 +165,7 @@ public class MultiplePermission {
             String[] array = not_granted.toArray(new String[not_granted.size()]);
             ActivityCompat.requestPermissions((Activity) context,array, PERMISSION_REQUEST_CODE);
 
+
             for(int j=0;j<not_granted.size();j++)
             {
                 if (ContextCompat.checkSelfPermission(context.getApplicationContext(), not_granted.get(j)) == PackageManager.PERMISSION_GRANTED)
@@ -185,35 +187,46 @@ public class MultiplePermission {
 
         if(denied.size()>0){
 
-            for (int i=0;i<denied.size();i++){
 
-             //   boolean flag= ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, denied.get(i));
+            for (int i=0;i<denied.size();i++)
+            {
+
+                boolean flag= ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, denied.get(i));
 
 
+                //shouldShowRequestPermissionRationale,if we chekh dont ask me again agsinst chekh box then
                 if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, denied.get(i)))
                 {
-                   // Toast.makeText((Activity) context, "MEssage show", Toast.LENGTH_SHORT).show();
+                    Toast.makeText((Activity) context, "MEssage show", Toast.LENGTH_SHORT).show();
+                    Permission_shouldshow.add("show");
                 }
                 else {
 
-                    if (Appdata.Camera_flag.equals("true")) {
 
-                    }
-                    else
-                    {
-                       // Toast.makeText((Activity) context, "Settings", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent();
-                        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                        Uri uri = Uri.fromParts("package", context.getPackageName(), null);
-                        intent.setData(uri);
-                        context.startActivity(intent);
-                    }
                 }
 
             }
-            Appdata.Camera_flag = "false";
+            if (!(Permission_shouldshow.size()>0))
+            {
+
+                if (Appdata.Camera_flag.equals("true")) {
+
+                    Appdata.Camera_flag = "false";
+
+                }
+                else
+                {
+                    Toast.makeText((Activity) context, "Settings", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent();
+                    intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                    Uri uri = Uri.fromParts("package", context.getPackageName(), null);
+                    intent.setData(uri);
+                    context.startActivity(intent);
+                }
+
+            }
         }
-     //  Toast.makeText(context, "3 Grant Counter\n"+Grant_permission_count.size(), Toast.LENGTH_SHORT).show();
+     // Toast.makeText(context, "3 Grant Counter\n"+Permission_shouldshow.size(), Toast.LENGTH_SHORT).show();
 
         if(Sennt_permission_count.size()==Grant_permission_count.size()){
 
