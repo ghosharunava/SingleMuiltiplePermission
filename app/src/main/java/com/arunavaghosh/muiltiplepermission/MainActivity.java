@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(MainActivity.this, "Not All Permissipon is taken", Toast.LENGTH_SHORT).show();
                         }
                     }
-                },"Location","Camera"/*,"Camera","File_STORAGE","SMS","CALENDAR","CONTACTS","CALL_PHONE","Record_Audio","Sensors"*/);
+                }/*,"Camera","File_STORAGE","SMS","CALENDAR","CONTACTS","CALL_PHONE","Record_Audio","Sensors"*/);
 
             }
         });

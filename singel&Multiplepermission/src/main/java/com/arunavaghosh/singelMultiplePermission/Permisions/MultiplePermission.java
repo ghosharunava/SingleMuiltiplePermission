@@ -25,6 +25,8 @@ import static android.Manifest.permission.READ_CALENDAR;
 import static android.Manifest.permission.READ_CONTACTS;
 import static android.Manifest.permission.RECORD_AUDIO;
 import static android.Manifest.permission.SEND_SMS;
+import static android.Manifest.permission.WRITE_CALENDAR;
+import static android.Manifest.permission.WRITE_CONTACTS;
 import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 /**
@@ -97,26 +99,26 @@ public class MultiplePermission {
                     break;
 
                 case "CALENDAR" :
-                    if (ContextCompat.checkSelfPermission(context.getApplicationContext(),READ_CALENDAR) == PackageManager.PERMISSION_GRANTED)
+                    if (ContextCompat.checkSelfPermission(context.getApplicationContext(),WRITE_CALENDAR) == PackageManager.PERMISSION_GRANTED)
                     {
 
                         Grant_permission_count.add(1);
                     }
                     else {
 
-                        not_granted.add("android.permission.READ_CALENDAR");
+                        not_granted.add("android.permission.WRITE_CALENDAR");
                     }
                     break;
 
                 case "CONTACTS" :
-                    if (ContextCompat.checkSelfPermission(context.getApplicationContext(),READ_CONTACTS) == PackageManager.PERMISSION_GRANTED)
+                    if (ContextCompat.checkSelfPermission(context.getApplicationContext(),WRITE_CONTACTS) == PackageManager.PERMISSION_GRANTED)
                     {
 
                         Grant_permission_count.add(1);
                     }
                     else {
 
-                        not_granted.add("android.permission.READ_CONTACTS");
+                        not_granted.add("android.permission.WRITE_CONTACTS");
                     }
                     break;
                 case "CALL_PHONE" :
